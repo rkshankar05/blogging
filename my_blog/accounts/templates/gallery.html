@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "gallery.css" %}">
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'roboto', sans-serif;
+    background-color: #F2F2F2;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+    gap: 30px 0; /* 30px vertical gap between rows */
+}
+
+.col-md-4 {
+    width: 33.3333%;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .col-md-4 {
+        width: 100%;
+    }
+}
+
+.cards-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+h1 {
+    text-align: center;
+    color: #333333;
+}
+
+.cardcontainer {
+    width: 350px;
+    height: 500px;
+    background-color: white;
+    margin: auto;
+    transition: height 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: flex-start;
+}
+
+/* Expand only if card has a message */
+.cardcontainer:hover:not(.no-message) {
+    height: 600px;
+}
+
+/* Prevent expansion for no-message cards */
+.cardcontainer.no-message:hover {
+    height: 500px;
+}
+
+.photo-wrapper {
+    width: 100%;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+/* No message: fixed image height */
+.cardcontainer.no-message .photo-wrapper {
+    height: 300px;
+    transition: none;
+}
+
+.cardcontainer.no-message:hover .photo-wrapper {
+    height: 300px;
+}
+
+/* Regular photo expansion for message cards */
+.cardcontainer:not(.no-message) .photo-wrapper {
+    height: 300px;
+}
+.cardcontainer:hover:not(.no-message) .photo-wrapper {
+    height: 300px; /* Keep image fixed, expand content */
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.photos {
+    width: 90px;
+    height: 30px;
+    background-color: #E74C3C;
+    color: white;
+    position: relative;
+    top: -30px;
+    padding-left: 10px;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.content {
+    width: 80%;
+    height: 100px;
+    margin: 0 auto;
+    position: relative;
+    top: -33px;
+    transition: height 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Expand content height on hover only if message exists */
+.cardcontainer:hover:not(.no-message) .content {
+    height: 200px;
+}
+
+.cardcontainer.no-message:hover .content {
+    height: 100px;
+}
+
+.txt4 {
+    font-size: 29px;
+    margin-bottom: 20px;
+}
+
+.txt2 {
+    flex-grow: 1;
+    overflow: hidden;
+    transition: height 0.3s ease, overflow 0.3s ease;
+}
+
+/* Scrollable message text on hover */
+.cardcontainer:hover:not(.no-message) .txt2 {
+    overflow-y: auto;
+    height: 130px;
+}
+
+/* Scrollbar styles */
+.txt2::-webkit-scrollbar {
+    width: 6px;
+}
+.txt2::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+.txt2::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.footer {
+    width: 80%;
+    height: 100px;
+    margin: auto;
+    background-color: white;
+    position: relative;
+    top: -15px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    margin: 0 10px;
+}
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for blogs in blogs %}
+            {% if request.user == blogs.user %}
+                <div class="col-sm-6 col-md-4 d-flex justify-content-center mb-4">
+                    <div class="cardcontainer {% if not blogs.messeage %}no-message{% endif %}">
+                        <div class="photo-wrapper">
+                            <div class="photo">
+                                <img src="{{ blogs.image.url }}" alt="Blog Image">
+                                <div class="photos">Photos</div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <p class="txt4">{{ blogs.name }}</p>
+                            {% if blogs.messeage %}
+                                <p class="txt2">{{ blogs.messeage }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="footer">
+                            <a class="btn btn-primary" href="{% url 'edit' blogs.id %}">Edit</a>
+                            <a href="{% url 'delete' blogs.id %}">
+                                <button class="btn btn-danger">Delete</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

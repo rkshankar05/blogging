@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .full-screen-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 70px; /* adjust for fixed navbar */
+            padding-bottom: 30px;
+            background-color: #f9f9f9; /* optional background */
+        }
+
+        .card-wrapper {
+            max-width: 400px;
+            width: 100%;
+        }
+    </style>
+{% endblock css %}
+
+{% block content %}
+<div class="full-screen-container">
+    <div class="card-wrapper">
+        <div class="card p-3 py-4 text-center">
+            {% if request.user.profile.profile_image %}
+                <img src="{{ request.user.profile.profile_image.url }}" width="120" class="img-circle center-block">
+            {% else %}
+                <img src="{% static 'images/default_profile.png' %}" width="120" class="img-circle center-block">
+            {% endif %}
+            <h3 class="mt-2">{{request.user }}</h3>
+            <h1>{{request.user.profile.dob}}</h1>
+            <div class="row mt-3 mb-3">
+                <div class="col-xs-4">
+                </div>
+                <div class="col-xs-4">
+                    <h5>Total Blogs</h5>
+                    <span class="num">{{data.total}}</span>
+                </div>
+                <div class="col-xs-4">
+                   
+                </div>
+            </div>
+
+            <hr class="line">
+
+            <div class="social-buttons mt-4">
+                <button class="neo-button"><i class="fa fa-facebook"></i></button>
+                <button class="neo-button"><i class="fa fa-linkedin"></i></button>
+                <button class="neo-button"><i class="fa fa-google"></i></button>
+                <button class="neo-button"><i class="fa fa-youtube"></i></button>
+                <button class="neo-button"><i class="fa fa-twitter"></i></button>
+            </div>
+
+            <div class="profile mt-4">
+                <a href="{% url "edit_profile" request.user.id%}"><button class="profile_button px-5">Edit Profile</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

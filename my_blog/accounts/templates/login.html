@@ -31,8 +31,10 @@
         </div>
         <button class="btn mt-3">Login</button>
     </form>
-    <div class="text-center fs-10">
-        <a href="#">Forget password?</a> or <a href="{% url "signup"%}">Sign up</a>
+   <div class="text-center fs-10">
+        <a href="{% url 'password_reset' %}">Forget password?</a>
+        or
+        <a href="{% url 'signup' %}">Sign up</a>
     </div>
 </div>
 {% endblock content %}

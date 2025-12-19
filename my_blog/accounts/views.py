@@ -1,10 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required 
 from django.contrib.auth import authenticate,login,logout
+from django.core.mail import send_mail
 from django.contrib import messages
 from . models import Blog,Profile
 from django.db.models import Q
+import random
 
 # Create your views here.
 def home(request):
@@ -31,31 +33,47 @@ def sign_up(request):
         last_name = request.POST['lastname']
         username = request.POST['username']
         password1 = request.POST['password1']
-        password = request.POST['password2']
+        password2 = request.POST['password2']
         email = request.POST['email']
+
         if User.objects.filter(username=username).exists():
-            messages.info(request,"username already exist")
+            messages.error(request, "Username already exists")
             return redirect("signup")
 
-        elif User.objects.filter(email=email).exists():
-            messages.info(request,"Email already used")
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already used")
             return redirect("signup")
 
-        if password1 == password :
-            if password:
-                User.objects.create_user(
-                    username = username,
-                    password = password,
-                    first_name = first_name,
-                    last_name = last_name,
-                    email = email
-                )
-                if request.user:
-                    return redirect('home')
-                return redirect('login')
-            return render(request,'sigup.html')
+        if password1 != password2:
+            messages.error(request, "Passwords do not match")
+            return redirect("signup")
 
-    return render(request,'sigup.html')
+        # Generate OTP
+        otp = random.randint(100000, 999999)
+
+        # Store data in session
+        request.session['signup_data'] = {
+            'first_name': first_name,
+            'last_name': last_name,
+            'username': username,
+            'password': password1,
+            'email': email,
+        }
+        request.session['otp'] = otp
+
+        # Send OTP email
+        send_mail(
+            subject="Your OTP for Registration",
+            message=f"Your OTP is {otp}",
+            from_email=None,
+            recipient_list=[email],
+        )
+
+        messages.success(request, "OTP sent to your email")
+        return redirect("verify_otp")
+
+    return render(request, "signup.html")
+
 
 @login_required
 def add_blog(request):
@@ -113,15 +131,14 @@ def delete(request,id):
 @login_required
 def profile(request):
     user = request.user
-    blogs = Blog.objects.all()
-    total_blogs = 0;
-    for blogs in blogs:
-        if request.user == blogs.user:
-            total_blogs = total_blogs +1
-    data = {"total":total_blogs,
-            }
-    
-    return render(request,"profile.html",{"data":data})
+    # Get only the logged-in user's blogs
+    user_blogs = Blog.objects.filter(user=request.user).order_by('-id')
+    total_blogs = user_blogs.count()
+    data = {
+        "total": total_blogs,
+        "blogs": user_blogs
+    }
+    return render(request, "profile.html", {"data": data})
 
 def forget(request):
     if request.method == "POST":
@@ -170,3 +187,39 @@ def edit_profile(request,id):
 
             return redirect('profile')
     return render(request,"edit_profile.html",{"user":user})
+
+def verify_otp(request):
+    if request.method == "POST":
+        entered_otp = request.POST['otp']
+        session_otp = request.session.get('otp')
+
+        if session_otp and entered_otp == str(session_otp):
+            data = request.session.get('signup_data')
+
+            User.objects.create_user(
+                username=data['username'],
+                password=data['password'],
+                email=data['email'],
+                first_name=data['first_name'],
+                last_name=data['last_name'],
+            )
+
+            # Clear session
+            request.session.flush()
+
+            messages.success(request, "Signup successful! Please login.")
+            return redirect("login")
+
+        else:
+            messages.error(request, "Invalid OTP")
+            return redirect("verify_otp")
+
+    return render(request, "verify_otp.html")
+
+@login_required
+def blog_detail(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    context = {
+        'blog': blog
+    }
+    return render(request, 'blog_detail.html', context)

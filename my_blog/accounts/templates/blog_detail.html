@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 100px auto; padding: 20px;">
+    <div style="background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h1 style="margin-bottom: 20px; color: #262626;">{{ blog.name }}</h1>
+        
+        {% if blog.image %}
+            <img src="{{ blog.image.url }}" alt="{{ blog.name }}" style="width: 100%; border-radius: 10px; margin-bottom: 20px;">
+        {% endif %}
+        
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #dbdbdb;">
+            {% if blog.user.profile.profile_image %}
+                <img src="{{ blog.user.profile.profile_image.url }}" alt="{{ blog.user.username }}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'images/default_profile.png' %}" alt="{{ blog.user.username }}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+            {% endif %}
+            <div>
+                <strong>{{ blog.user.username }}</strong>
+            </div>
+        </div>
+        
+        <p style="line-height: 1.8; color: #262626; font-size: 16px;">{{ blog.messeage }}</p>
+        
+        <div style="margin-top: 30px;">
+            <a href="{% url 'profile' %}" style="padding: 10px 20px; background: #0095f6; color: #fff; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Back to Profile
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

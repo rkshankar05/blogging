@@ -80,10 +80,20 @@
 
 .search-card-link {
     font-size: 0.9rem;
-    color: #3b82f6;
-    text-decoration: none;
     font-weight: 500;
+    text-decoration: none;
+    background: linear-gradient(45deg, #1c3f28ff, #1f994aff); /* same as blog-btn-read */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: opacity 0.2s ease;
 }
+
+.search-card-link:hover {
+    opacity: 0.85;
+    text-decoration: underline;
+}
+
 
 /* empty */
 .search-empty {

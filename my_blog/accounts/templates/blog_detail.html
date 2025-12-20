@@ -1,33 +1,211 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+<title>{{ blog.name }} - Blog Detail</title>
+{% endblock title %}
+
+{% block css %}
+<style>
+    body {
+        background: #0f172a;
+        min-height: 100vh;
+    }
+
+    .blog-detail-wrapper {
+        padding: 80px 20px 40px; /* space for navbar */
+        min-height: calc(100vh - 70px);
+    }
+
+    .blog-detail-container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: #1e293b;
+        border-radius: 16px;
+        border: 1px solid #334155;
+        padding: 30px 26px 32px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .blog-detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 18px;
+        color: #e5e7eb;
+        gap: 12px;
+    }
+
+    .blog-detail-title {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .blog-detail-meta {
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .blog-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 6px;
+    }
+
+    .author-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        overflow: hidden;
+        border: 1px solid #334155;
+        background: #0f172a;
+    }
+
+    .author-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .blog-detail-image {
+        margin: 20px 0;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #334155;
+        background: #020617;
+    }
+
+    .blog-detail-image img {
+        width: 100%;
+        max-height: 420px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .blog-detail-content {
+        color: #e5e7eb;
+        font-size: 15px;
+        line-height: 1.7;
+        white-space: pre-line;
+    }
+
+    .blog-detail-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 24px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .back-link {
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .back-link:hover {
+        color: #e5e7eb;
+        text-decoration: underline;
+    }
+
+    .btn-group a {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        text-decoration: none;
+        margin-left: 8px;
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: #f9fafb;
+    }
+
+    .btn-edit:hover {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+
+    .btn-delete {
+        border: 1px solid #ef4444;
+        color: #fecaca;
+        background: rgba(239, 68, 68, 0.05);
+    }
+
+    .btn-delete:hover {
+        background: rgba(239, 68, 68, 0.12);
+    }
+
+    @media (max-width: 768px) {
+        .blog-detail-wrapper {
+            padding: 70px 15px 30px;
+        }
+
+        .blog-detail-container {
+            padding: 22px 18px 26px;
+        }
+
+        .blog-detail-title {
+            font-size: 22px;
+        }
+    }
+</style>
+{% endblock css %}
+
 {% block content %}
-<div style="max-width: 800px; margin: 100px auto; padding: 20px;">
-    <div style="background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-        <h1 style="margin-bottom: 20px; color: #262626;">{{ blog.name }}</h1>
-        
-        {% if blog.image %}
-            <img src="{{ blog.image.url }}" alt="{{ blog.name }}" style="width: 100%; border-radius: 10px; margin-bottom: 20px;">
-        {% endif %}
-        
-        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #dbdbdb;">
-            {% if blog.user.profile.profile_image %}
-                <img src="{{ blog.user.profile.profile_image.url }}" alt="{{ blog.user.username }}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-            {% else %}
-                <img src="{% static 'images/default_profile.png' %}" alt="{{ blog.user.username }}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-            {% endif %}
+<div class="blog-detail-wrapper">
+    <div class="blog-detail-container">
+
+        <div class="blog-detail-header">
             <div>
-                <strong>{{ blog.user.username }}</strong>
+                <div class="blog-detail-title">{{ blog.name }}</div>
+                <div class="blog-detail-meta">
+                    {{ blog.created_at|date:"M d, Y" }}
+                </div>
+                <div class="blog-author">
+                    <div class="author-avatar">
+                        {% if blog.user.profile.profile_image %}
+                            <img src="{{ blog.user.profile.profile_image.url }}" alt="{{ blog.user.username }}">
+                        {% else %}
+                            <img src="{% static 'img/default_profile.png' %}" alt="{{ blog.user.username }}">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div style="font-size:14px; color:#e5e7eb;">
+                            {{ blog.user.username }}
+                        </div>
+                        <div style="font-size:12px; color:#9ca3af;">
+                            Author
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <p style="line-height: 1.8; color: #262626; font-size: 16px;">{{ blog.messeage }}</p>
-        
-        <div style="margin-top: 30px;">
-            <a href="{% url 'profile' %}" style="padding: 10px 20px; background: #0095f6; color: #fff; text-decoration: none; border-radius: 5px; display: inline-block;">
-                Back to Profile
-            </a>
+
+        {% if blog.image %}
+        <div class="blog-detail-image">
+            <img src="{{ blog.image.url }}" alt="{{ blog.name }}">
         </div>
+        {% endif %}
+
+        <div class="blog-detail-content">
+            {{ blog.messeage }}
+        </div>
+
+        <div class="blog-detail-actions">
+            <a href="{% url 'profile' %}" class="back-link">← Back to Profile</a>
+
+            {% if user == blog.user %}
+            <div class="btn-group">
+                <a href="{% url 'edit' blog.id %}" class="btn-edit">Edit Post</a>
+                <a href="{% url 'delete' blog.id %}" class="btn-delete">Delete</a>
+            </div>
+            {% endif %}
+        </div>
+
     </div>
 </div>
 {% endblock content %}

@@ -1,71 +1,305 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+<title>Sign Up - Create Account</title>
+{% endblock title %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static "sigup.css"%}">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #0f172a;
+        min-height: 100vh;
+        padding-bottom: 50px;
+    }
+
+    /* Navbar adjustments for dark theme */
+    .navbar-inverse {
+        margin-bottom: 0;
+        border-radius: 0;
+    }
+
+    .signup-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px 40px;
+        min-height: calc(100vh - 70px);
+    }
+
+    .dark-container {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 460px;
+        padding: 50px 45px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-section {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .header-section h1 {
+        color: #f8fafc;
+        font-size: 28px;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .header-section p {
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    .field-group {
+        margin-bottom: 22px;
+    }
+
+    .field-group label {
+        display: block;
+        color: #cbd5e1;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+    }
+
+    .field-group input {
+        width: 100%;
+        padding: 12px 14px;
+        background: #0f172a;
+        border: 1.5px solid #334155;
+        border-radius: 8px;
+        color: #f8fafc;
+        font-size: 15px;
+        transition: all 0.2s ease;
+    }
+
+    .field-group input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        background: #1e293b;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .field-group input::placeholder {
+        color: #64748b;
+    }
+
+    .grid-two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .register-btn {
+        width: 100%;
+        padding: 13px;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 12px;
+        letter-spacing: 0.3px;
+    }
+
+    .register-btn:hover {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+    }
+
+    .register-btn:active {
+        transform: translateY(0);
+    }
+
+    .terms-text {
+        text-align: center;
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 20px;
+        line-height: 1.6;
+    }
+
+    .terms-text a {
+        color: #3b82f6;
+        text-decoration: none;
+    }
+
+    .terms-text a:hover {
+        text-decoration: underline;
+    }
+
+    .login-section {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid #334155;
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    .login-section a {
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-section a:hover {
+        text-decoration: underline;
+    }
+
+    .error-alert {
+        padding: 12px 15px;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 8px;
+        color: #fca5a5;
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .signup-section {
+            padding: 40px 15px 30px;
+            min-height: auto;
+        }
+
+        .dark-container {
+            padding: 40px 30px;
+        }
+
+        .header-section h1 {
+            font-size: 24px;
+        }
+
+        .grid-two {
+            grid-template-columns: 1fr;
+            gap: 22px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .signup-section {
+            padding: 30px 10px 20px;
+        }
+
+        .dark-container {
+            padding: 35px 25px;
+            border-radius: 12px;
+        }
+
+        .header-section h1 {
+            font-size: 22px;
+        }
+
+        .header-section p {
+            font-size: 13px;
+        }
+
+        .field-group label {
+            font-size: 12px;
+        }
+
+        .field-group input {
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .register-btn {
+            padding: 11px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .dark-container {
+            padding: 30px 20px;
+        }
+
+        .header-section {
+            margin-bottom: 30px;
+        }
+    }
+</style>
 {% endblock css %}
 
 {% block content %}
-{% if messages %}
-<div class="alert alert-danger" role="alert">
-    {% for messages in messages %}
-        {{messages}}
-    {% endfor %}
-</div>
-{% endif%}
-<body>
-    <div class="container">
-        <div class="row centered-form">
-            <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please sign up for new account</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form" method="post">
-                            {% csrf_token %}
+<div class="signup-section">
+    <div class="dark-container">
+        <div class="header-section">
+            <h1>Create Account</h1>
+            <p>Sign up to get started with our platform</p>
+        </div>
 
-                            <div class="form-group">
-                                <input type="text" name="username" id="userName" class="form-control" placeholder="Username">
-                            </div>
+        {% if messages %}
+        <div class="error-alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
 
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <input type="text" name="firstname" id="firstname" class="form-control" placeholder="First Name">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <input type="text" name="lastname" id="last_name" class="form-control" placeholder="Last Name">
-                                    </div>
-                                </div>
-                            </div>
+        <form method="post">
+            {% csrf_token %}
 
-                            <div class="form-group">
-                                <input type="email" name="email" id="email" class="form-control" placeholder="Email Address">
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <input type="password" name="password1" id="password" class="form-control" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <input type="password" name="password2" id="password_confirmation" class="form-control" placeholder="Confirm Password">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <input type="submit" value="Register" class="btn btn-info btn-block">
-                        </form>
-                    </div>
+            <div class="grid-two">
+                <div class="field-group">
+                    <label for="firstname">FIRST NAME</label>
+                    <input type="text" name="firstname" id="firstname" placeholder="John" required>
+                </div>
+                <div class="field-group">
+                    <label for="lastname">LAST NAME</label>
+                    <input type="text" name="lastname" id="lastname" placeholder="Doe" required>
                 </div>
             </div>
+
+            <div class="field-group">
+                <label for="username">USERNAME</label>
+                <input type="text" name="username" id="username" placeholder="johndoe" required>
+            </div>
+
+            <div class="field-group">
+                <label for="email">EMAIL ADDRESS</label>
+                <input type="email" name="email" id="email" placeholder="john@example.com" required>
+            </div>
+
+            <div class="grid-two">
+                <div class="field-group">
+                    <label for="password1">PASSWORD</label>
+                    <input type="password" name="password1" id="password1" placeholder="••••••••" required>
+                </div>
+                <div class="field-group">
+                    <label for="password2">CONFIRM</label>
+                    <input type="password" name="password2" id="password2" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="register-btn">CREATE ACCOUNT</button>
+
+            <p class="terms-text">
+                By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </p>
+        </form>
+
+        <div class="login-section">
+            Already have an account? <a href="{% url 'login' %}">Sign In</a>
         </div>
     </div>
+</div>
 {% endblock content %}
- 

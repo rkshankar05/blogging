@@ -1,26 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}
+<title>Profile</title>
+{% endblock title %}
+
 {% block css %}
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 body {
     font-family: 'Roboto', sans-serif;
-    background: #fafafa;
+    background: #020617;
+    color: #e5e7eb;
 }
 
+/* main wrapper */
 .instagram-profile {
     max-width: 935px;
     margin: 0 auto;
     padding: 100px 20px 40px;
 }
 
+/* top card */
 .profile-header {
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 3px;
+    background: #020617;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
     padding: 40px;
     margin-bottom: 30px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.7);
 }
 
 .header-content {
@@ -40,11 +49,12 @@ body {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid #dbdbdb;
+    border: 2px solid #3b82f6;
     padding: 3px;
-    background: #fff;
+    background: #020617;
 }
 
+/* right info */
 .info-section {
     display: flex;
     flex-direction: column;
@@ -61,42 +71,43 @@ body {
 .username {
     font-size: 28px;
     font-weight: 300;
-    color: #262626;
+    color: #f9fafb;
 }
 
 .edit-profile-btn {
     padding: 8px 20px;
     background: transparent;
-    border: 1px solid #dbdbdb;
-    border-radius: 4px;
+    border: 1px solid #4b5563;
+    border-radius: 6px;
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
-    transition: background 0.2s ease;
     text-decoration: none;
-    color: #262626;
+    color: #e5e7eb;
     display: inline-block;
+    transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .edit-profile-btn:hover {
-    background: #fafafa;
-    color: #262626;
+    background: #111827;
+    border-color: #6b7280;
 }
 
 .settings-icon {
     font-size: 24px;
-    color: #262626;
+    color: #9ca3af;
     cursor: pointer;
 }
 
 .stats-row {
     display: flex;
     gap: 40px;
+    flex-wrap: wrap;
 }
 
 .stat {
     font-size: 16px;
-    color: #262626;
+    color: #e5e7eb;
 }
 
 .stat strong {
@@ -110,30 +121,32 @@ body {
 
 .full-name {
     font-weight: 600;
-    color: #262626;
+    color: #e5e7eb;
 }
 
 .bio-text {
-    color: #262626;
+    color: #9ca3af;
     margin-top: 5px;
 }
 
 .bio-text i {
     margin-right: 5px;
-    color: #8e8e8e;
+    color: #6b7280;
 }
 
+/* TABS */
 .tabs-section {
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 3px;
+    background: #020617;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
     margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .tabs {
     display: flex;
     justify-content: center;
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 1px solid #1f2937;
 }
 
 .tab {
@@ -141,7 +154,7 @@ body {
     margin: 0 30px;
     border: none;
     background: none;
-    color: #8e8e8e;
+    color: #9ca3af;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
@@ -152,11 +165,11 @@ body {
 }
 
 .tab:hover {
-    color: #262626;
+    color: #e5e7eb;
 }
 
 .tab.active {
-    color: #262626;
+    color: #e5e7eb;
 }
 
 .tab.active::after {
@@ -166,28 +179,29 @@ body {
     left: 0;
     right: 0;
     height: 1px;
-    background: #262626;
+    background: #e5e7eb;
 }
 
 .tab i {
     margin-right: 6px;
 }
 
+/* POSTS GRID */
 .posts-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
+    gap: 10px;
 }
 
 .post-item {
     position: relative;
     padding-bottom: 100%;
-    background: #efefef;
-    border: 1px solid #dbdbdb;
+    background: #020617;
+    border: 1px solid #111827;
     cursor: pointer;
     overflow: hidden;
     text-decoration: none;
-    border-radius: 3px;
+    border-radius: 6px;
 }
 
 .post-item img {
@@ -197,28 +211,26 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .post-item:hover img {
     transform: scale(1.05);
+    opacity: 0.9;
 }
 
 .post-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    inset: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
     opacity: 0;
     transition: opacity 0.2s ease;
-    color: #fff;
+    color: #f9fafb;
     font-weight: 600;
 }
 
@@ -254,49 +266,51 @@ body {
     line-height: 1.3;
 }
 
+/* EMPTY STATE */
 .no-posts {
     text-align: center;
     padding: 80px 20px;
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 3px;
+    background: #020617;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
 }
 
 .no-posts i {
     font-size: 64px;
     margin-bottom: 20px;
-    color: #dbdbdb;
+    color: #1f2937;
 }
 
 .no-posts h3 {
     font-size: 28px;
     font-weight: 700;
-    color: #262626;
+    color: #f9fafb;
     margin-bottom: 10px;
 }
 
 .no-posts p {
     font-size: 14px;
-    color: #8e8e8e;
+    color: #9ca3af;
 }
 
 .create-post-btn {
     margin-top: 20px;
     padding: 10px 30px;
-    background: #0095f6;
+    background: #3b82f6;
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 999px;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .create-post-btn:hover {
-    background: #0081d8;
-    color: #fff;
+    background: #2563eb;
+    transform: translateY(-1px);
 }
 
 /* Responsive */
@@ -304,37 +318,37 @@ body {
     .instagram-profile {
         padding: 80px 10px 30px;
     }
-    
+
     .profile-header {
-        padding: 20px;
+        padding: 24px;
     }
-    
+
     .header-content {
         grid-template-columns: 1fr;
         gap: 30px;
         text-align: center;
     }
-    
+
     .avatar-section {
         justify-content: center;
     }
-    
+
     .profile-pic {
         width: 120px;
         height: 120px;
     }
-    
+
     .username-row {
         justify-content: center;
     }
-    
+
     .stats-row {
         justify-content: center;
     }
-    
+
     .posts-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 3px;
+        gap: 4px;
     }
 }
 
@@ -343,29 +357,29 @@ body {
         width: 100px;
         height: 100px;
     }
-    
+
     .username {
         font-size: 22px;
     }
-    
+
     .username-row {
         gap: 10px;
     }
-    
+
     .stats-row {
         gap: 20px;
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .stat {
         font-size: 14px;
     }
-    
+
     .posts-grid {
-        gap: 2px;
+        gap: 3px;
     }
-    
+
     .tab {
         margin: 0 15px;
         font-size: 11px;
@@ -385,7 +399,7 @@ body {
                     <img src="{% static 'images/default_profile.png' %}" class="profile-pic" alt="{{ request.user.username }}">
                 {% endif %}
             </div>
-            
+
             <div class="info-section">
                 <div class="username-row">
                     <h1 class="username">{{ request.user.username }}</h1>
@@ -394,13 +408,13 @@ body {
                     </a>
                     <i class="fa fa-cog settings-icon"></i>
                 </div>
-                
+
                 <div class="stats-row">
                     <div class="stat"><strong>{{ data.total }}</strong> post{{ data.total|pluralize }}</div>
                     <div class="stat"><strong>0</strong> followers</div>
                     <div class="stat"><strong>0</strong> following</div>
                 </div>
-                
+
                 <div class="bio-section">
                     <div class="full-name">{{ request.user.get_full_name|default:request.user.username }}</div>
                     {% if request.user.profile.dob %}
@@ -412,7 +426,7 @@ body {
             </div>
         </div>
     </div>
-    
+
     <div class="tabs-section">
         <div class="tabs">
             <button class="tab active"><i class="fa fa-th"></i> POSTS</button>
@@ -420,7 +434,7 @@ body {
             <button class="tab"><i class="fa fa-user-tag"></i> TAGGED</button>
         </div>
     </div>
-    
+
     {% if data.blogs %}
         <div class="posts-grid">
             {% for blog in data.blogs %}
@@ -442,7 +456,7 @@ body {
             <i class="fa fa-camera"></i>
             <h3>No Posts Yet</h3>
             <p>Start sharing your thoughts and experiences with the world</p>
-            <a href="#" class="create-post-btn">
+            <a href="{% url 'add_blog' %}" class="create-post-btn">
                 <i class="fa fa-plus"></i> Create Your First Post
             </a>
         </div>

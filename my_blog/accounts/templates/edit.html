@@ -1,36 +1,361 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+<title>Edit Blog</title>
+{% endblock title %}
+
 {% block css %}
-<link rel="stylesheet" href="{% static "blog.css"%}">
+<style>
+    body {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .edit-wrapper {
+        padding: 80px 20px 50px;
+        min-height: calc(100vh - 70px);
+    }
+
+    .edit-container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: #1e293b;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        border: 1px solid #334155;
+    }
+
+    .edit-header {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        padding: 40px 30px;
+        text-align: center;
+    }
+
+    .edit-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .edit-icon svg {
+        width: 40px;
+        height: 40px;
+        color: white;
+    }
+
+    .edit-header h2 {
+        color: white;
+        font-size: 32px;
+        margin: 0;
+        font-weight: 700;
+    }
+
+    .edit-header p {
+        color: rgba(255, 255, 255, 0.9);
+        margin: 10px 0 0;
+        font-size: 15px;
+    }
+
+    .edit-form {
+        padding: 50px 40px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .form-section {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-field label {
+        color: #cbd5e1;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .form-field input[type="text"],
+    .form-field textarea {
+        width: 100%;
+        padding: 14px 16px;
+        background: #0f172a;
+        border: 2px solid #334155;
+        border-radius: 10px;
+        color: #f1f5f9;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .form-field input[type="text"]:focus,
+    .form-field textarea:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        background: #1e293b;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    }
+
+    .form-field textarea {
+        resize: vertical;
+        min-height: 180px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .current-image {
+        margin-top: 10px;
+        padding: 15px;
+        background: #0f172a;
+        border-radius: 10px;
+        border: 1px solid #334155;
+    }
+
+    .current-image img {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .current-image p {
+        color: #94a3b8;
+        font-size: 12px;
+        margin: 10px 0 0;
+        text-align: center;
+    }
+
+    .file-upload-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .file-upload-wrapper input[type="file"] {
+        position: absolute;
+        left: -9999px;
+    }
+
+    .file-upload-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 20px;
+        background: #0f172a;
+        border: 2px dashed #334155;
+        border-radius: 10px;
+        color: #94a3b8;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .file-upload-label:hover {
+        border-color: #8b5cf6;
+        background: #1e293b;
+        color: #8b5cf6;
+    }
+
+    .file-upload-label svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .file-name {
+        color: #8b5cf6;
+        font-size: 14px;
+        margin-top: 8px;
+        display: none;
+    }
+
+    .submit-section {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn-update {
+        padding: 15px 40px;
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-update:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-cancel {
+        padding: 15px 40px;
+        background: transparent;
+        color: #94a3b8;
+        border: 2px solid #334155;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-cancel:hover {
+        border-color: #64748b;
+        color: #cbd5e1;
+        text-decoration: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .edit-wrapper {
+            padding: 40px 15px 30px;
+        }
+
+        .edit-header {
+            padding: 30px 20px;
+        }
+
+        .edit-header h2 {
+            font-size: 26px;
+        }
+
+        .edit-icon {
+            width: 70px;
+            height: 70px;
+        }
+
+        .edit-form {
+            padding: 30px 25px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .submit-section {
+            flex-direction: column;
+        }
+
+        .btn-update,
+        .btn-cancel {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .edit-header h2 {
+            font-size: 22px;
+        }
+
+        .edit-form {
+            padding: 25px 20px;
+        }
+
+        .form-field input[type="text"],
+        .form-field textarea {
+            padding: 12px 14px;
+            font-size: 14px;
+        }
+    }
+</style>
 {% endblock css %}
 
 {% block content %}
-<div class="container contact-form">
-    <div class="contact-image">
-        <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact"/>
-    </div>
-    <form method="post" enctype = "multipart/form-data">
-        {% csrf_token %}
-        <h3>Update Your Blog</h3>
-       <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="form-group">
-                    <input type="text" name="name" class="form-control" value="{{blog.name}}" />
-                </div>
-                <div class="form-group">
-                    <input type="file" class="form-control" value = "blog.image.url"id="image" name = "image">
-                </div>
-                <div class="form-group">
-                    <input type="submit" name="btnSubmit" class="btnContact" value="Add Blog" />
-                </div>
+<div class="edit-wrapper">
+    <div class="edit-container">
+        <div class="edit-header">
+            <div class="edit-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
             </div>
-            <div class="col-12 col-md-6">
-                <div class="form-group">
-                    <textarea name="messeage" class="form-control" value = "{{blog.messeage}}"  style="width: 100%; height: 150px;"></textarea>
-                </div>
-            </div>
+            <h2>Edit Blog Post</h2>
+            <p>Update your blog content</p>
         </div>
-    </form>
+
+        <form class="edit-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-grid">
+                <div class="form-section">
+                    <div class="form-field">
+                        <label for="name">Blog Title</label>
+                        <input type="text" name="name" id="name" value="{{blog.name}}" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="image">Update Featured Image</label>
+                        
+                        {% if blog.image %}
+                        <div class="current-image">
+                            <img src="{{blog.image.url}}" alt="Current image">
+                            <p>Current Image (Leave empty to keep this)</p>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="file-upload-wrapper" style="margin-top: 15px;">
+                            <input type="file" id="image" name="image" accept="image/*" onchange="displayFileName(this)">
+                            <label for="image" class="file-upload-label">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Choose New Image
+                            </label>
+                            <p class="file-name" id="fileName"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-field">
+                        <label for="message">Blog Content</label>
+                        <textarea name="messeage" id="message" required>{{blog.messeage}}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button type="submit" class="btn-update">Update Blog</button>
+                <a href="{% url 'profile' %}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>
+
+<script>
+function displayFileName(input) {
+    const fileName = document.getElementById('fileName');
+    if (input.files && input.files[0]) {
+        fileName.textContent = input.files[0].name;
+        fileName.style.display = 'block';
+    }
+}
+</script>
 {% endblock content %}

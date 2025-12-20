@@ -1,0 +1,154 @@
+:root {
+    /* global colors */
+    --bg-main: #020617;
+    --bg-card: rgba(15, 23, 42, 0.95);
+    --border-muted: rgba(148, 163, 184, 0.35);
+    --text-main: #9fabb6ff;
+    --text-muted: #64748b;
+    --accent: #6366f1;
+    --accent-2: #8b5cf6;
+    --btn-primary-bg: linear-gradient(135deg, #6366f1, #8b5cf6);
+    --btn-ghost-border: rgba(148,163,184,0.8);
+}
+
+/* ============ BASE STYLES ============ */
+body {
+    background: radial-gradient(circle at top left, #0f0f23, #1a1a2e 50%, #020617) !important;
+    color: var(--text-main) !important;
+    font-family: 'Roboto', system-ui, -apple-system, "Segoe UI", sans-serif !important;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* ============ NAVBAR STYLES ============ */
+.navbar-inverse {
+    background: var(--bg-card) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2) !important;
+    margin-bottom: 0 !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-inverse .navbar-brand {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.navbar-inverse .navbar-brand:hover {
+    color: var(--accent-2) !important;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: var(--text-main) !important;
+    transition: all 0.3s ease;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+    color: #ffffff !important;
+    background: rgba(99, 102, 241, 0.2) !important;
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+    background: rgba(99, 102, 241, 0.3) !important;
+    color: #ffffff !important;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background: rgba(99, 102, 241, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: rgba(148, 163, 184, 0.3) !important;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+    background: rgba(99, 102, 241, 0.2) !important;
+}
+
+.navbar-inverse .navbar-toggle .icon-bar {
+    background-color: var(--text-main) !important;
+}
+
+.navbar-inverse .navbar-form .form-control {
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+.navbar-inverse .navbar-form .form-control:focus {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.navbar-inverse .navbar-form .form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.navbar-inverse .navbar-form .input-group-addon {
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
+    color: var(--text-main) !important;
+}
+
+/* Dropdown menu styling */
+.navbar-inverse .navbar-nav > li > .dropdown-menu {
+    background: rgba(15, 23, 42, 0.98) !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+.navbar-inverse .navbar-nav > li > .dropdown-menu > li > a {
+    color: var(--text-main) !important;
+    transition: all 0.3s ease;
+}
+
+.navbar-inverse .navbar-nav > li > .dropdown-menu > li > a:hover,
+.navbar-inverse .navbar-nav > li > .dropdown-menu > li > a:focus {
+    background: rgba(99, 102, 241, 0.2) !important;
+    color: #ffffff !important;
+}
+
+/* Mobile menu */
+@media (max-width: 767px) {
+    .navbar-inverse .navbar-collapse {
+        background: rgba(15, 23, 42, 0.98);
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
+    }
+}
+
+/* ============ GENERIC HELPERS ============ */
+.card-dark {
+    background: var(--bg-card);
+    border-radius: 20px;
+    border: 1px solid var(--border-muted);
+    box-shadow: 0 22px 55px rgba(0,0,0,0.8);
+    color: var(--text-main);
+}
+
+.btn-primary-theme {
+    background: var(--btn-primary-bg);
+    color: #f9fafb;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-ghost-theme {
+    background: transparent;
+    color: var(--text-main);
+    border-radius: 999px;
+    border: 1px solid var(--btn-ghost-border);
+    font-weight: 600;
+    cursor: pointer;
+}

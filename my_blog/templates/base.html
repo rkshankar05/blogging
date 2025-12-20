@@ -8,6 +8,7 @@
     {% block title %}
     <title>Document</title>
     {% endblock title %}
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
     {% block css %}{% endblock css %}
 </head>
 <body>
@@ -20,9 +21,9 @@
         
                 <div class="navbar-header">
                   <button class="navbar-toggle" data-target="#mobile_menu" data-toggle="collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                  <a href="#" class="navbar-brand">
-                    <img src="https://static.vecteezy.com/system/resources/previews/004/701/937/non_2x/rk-letter-logo-isolated-on-white-background-vector.jpg" alt="Logo" style=" height: 40px; width: auto; display: inline-block; margin-top: -10px;">
-                </a>
+                  <a href="{% url 'home' %}" class="navbar-brand">
+                    <img src="https://static.vecteezy.com/system/resources/previews/004/701/937/non_2x/rk-letter-logo-isolated-on-white-background-vector.jpg" alt="Logo" style="height: 40px; width: auto; display: inline-block; margin-top: -10px;">
+                  </a>
                 </div>
         
                 <div class="navbar-collapse collapse" id="mobile_menu">
@@ -60,23 +61,23 @@
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                    <li><a href="{%url "profile"%}"><span class="glyphicon glyphicon-user"></span> {{user.first_name}} {{user.last_name}}</a></li>
+                    <li><a href="{% url 'profile' %}"><span class="glyphicon glyphicon-user"></span> {{user.first_name}} {{user.last_name}}</a></li>
                     {% else %}
-                    <li><a href="{%url "profile"%}"><span class="glyphicon glyphicon-user"></span>Profile</a></li>
+                    <li><a href="{% url 'profile' %}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                     {% endif %}
                     <li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login / Sign Up <span class="caret"></span></a>
                       <ul class="dropdown-menu">
                         {% if user.is_authenticated %}
-                        <li><a href="{% url "signup"%}">Sign Up</a></li>
-                        <li><a href="{% url "logout"%}">Logout</a></li>
+                        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
                         {% else %}
-                        <li><a href="{% url "login"%}">Login</a></li>
-                        <li><a href="{% url "signup"%}">Sign Up</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'signup' %}">Sign Up</a></li>
                         {% endif %}
                       </ul>
                     </li>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url "logout"%}">
+                    <li><a href="{% url 'logout' %}">
                       <span class="glyphicon glyphicon-log-out"></span>
                     </a></li>
                     {% endif %}
@@ -90,7 +91,7 @@
     {% endblock navbar %}
 
     {% block content %}
-    <h1>Deafault Page</h1>
+    <h1>Default Page</h1>
     {% endblock content %}
     
     {% block js %}

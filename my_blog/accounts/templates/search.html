@@ -1,67 +1,165 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+<title>Search results</title>
+{% endblock title %}
+
 {% block css %}
 <style>
-/* Square box styling */
-.square-box {
-    position: relative;
-    width: 100%;
-    padding-top: 100%; /* 1:1 aspect ratio */
-    overflow: hidden;
-    border-radius: 10px 10px 0 0;
+body {
+    background: radial-gradient(circle at top, #111827, #020617 55%, #000 100%);
+    min-height: 100vh;
+    color: #e5e7eb;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-.square-box img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+.navbar,
+.navbar-inverse {
+    margin-bottom: 0;
+}
+
+.search-section {
+    min-height: calc(100vh - 70px);
+    padding: 80px 24px 40px;
+}
+
+.search-container {
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+/* header */
+.search-heading {
+    margin-bottom: 24px;
+}
+
+.search-heading h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.search-heading p {
+    font-size: 1rem;
+    color: #9ca3af;
+}
+
+/* grid of simple cards */
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.search-card {
+    background: #020617;
+    border-radius: 16px;
+    border: 1px solid #1f2937;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.7);
+    padding: 16px 16px 14px;
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    object-fit: cover;
 }
 
-/* Card styling */
-.blog-card {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.2s ease;
+.search-card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 6px;
 }
 
-.blog-card:hover {
-    transform: translateY(-5px);
+.search-card-meta {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    margin-bottom: 10px;
+}
+
+.search-card-excerpt {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    margin-bottom: 12px;
+}
+
+.search-card-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #9ca3af;
+}
+
+.search-card-link {
+    font-size: 0.9rem;
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* empty */
+.search-empty {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.search-empty h3 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+}
+
+.search-empty p {
+    font-size: 0.95rem;
+    color: #9ca3af;
+}
+
+@media (max-width: 768px) {
+    .search-section {
+        padding: 80px 14px 30px;
+    }
+
+    .search-heading h2 {
+        font-size: 1.7rem;
+    }
 }
 </style>
 {% endblock css %}
 
 {% block content %}
-{% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-success" role="alert">
-        {{ message }}
-    </div>
-    {% endfor %}
-{% endif %}
+<div class="search-section">
+    <div class="search-container">
 
-<div class="container mt-4">
-    <div class="row">
-        {% for blog in results %}
-        <div class="col-12 col-sm-6 col-md-4">
-            <div class="blog-card h-100 bg-white">
-                <div class="p-3">
-                    <h3 class="text-center"> By:- {{ blog.user }}</h3>
-                </div>
-                <div class="square-box">
-                    <img src="{{ blog.image.url }}" alt="Image">
-                </div>
-                <div class="p-3">
-                    <h5 class="text-center">{{ blog.name }}</h5>
-                    <p class="text-center">{{ blog.messeage }}</p>
-                </div>
-            </div>
+        <div class="search-heading">
+            <h2>Search results</h2>
+            <p>Browse posts that match your search.</p>
         </div>
-        {% endfor %}
+
+        {% if results %}
+            <div class="search-grid">
+                {% for blog in results %}
+                    <div class="search-card">
+                        <div class="search-card-title">{{ blog.name }}</div>
+                        <div class="search-card-meta">
+                            by {{ blog.user.username }} · {{ blog.created_at|date:"M d, Y" }}
+                        </div>
+                        <div class="search-card-excerpt">
+                            {{ blog.description|truncatewords:25 }}
+                        </div>
+                        <div class="search-card-footer">
+                            <span>{{ blog.category }}</span>
+                            <a href="{% url 'blog_detail' blog.id %}" class="search-card-link">
+                                Read more →
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="search-empty">
+                <h3>No results found</h3>
+                <p>Try different keywords or check your spelling.</p>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}

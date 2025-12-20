@@ -196,8 +196,9 @@
         </div>
 
         <div class="blog-detail-actions">
-            <a href="{% url 'profile' %}" class="back-link">← Back to Profile</a>
-
+            <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="back-link">
+                ← Back
+            </a>
             {% if user == blog.user %}
             <div class="btn-group">
                 <a href="{% url 'edit' blog.id %}" class="btn-edit">Edit Post</a>

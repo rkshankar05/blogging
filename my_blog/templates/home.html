@@ -11,6 +11,7 @@
         background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
         min-height: 100vh;
         color: #e0e0e0;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     }
 
     .navbar,
@@ -19,36 +20,50 @@
     }
 
     .home-wrapper {
-        padding: 80px 20px 40px;  /* space for navbar */
+        padding: 80px 20px 40px;
         min-height: calc(100vh - 70px);
     }
 
     .home-container {
         max-width: 1400px;
-        margin: 0 auto;          /* center block like gallery */
+        margin: 0 auto;
         padding: 0 15px;
     }
 
-    .messages {
-        margin-bottom: 20px;
+    /* centered toast messages */
+    .toast-container {
+        position: fixed;
+        top: 90px;                 /* below navbar */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
     }
 
-    .alert-msg {
-        padding: 10px 14px;
+    .toast-msg {
+        min-width: 260px;
+        max-width: 420px;
+        padding: 10px 16px;
         border-radius: 8px;
         font-size: 14px;
-        margin-bottom: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        border: 1px solid transparent;
+        backdrop-filter: blur(8px);
+        text-align: center;
     }
 
-    .alert-success {
+    .toast-success {
         background: rgba(34, 197, 94, 0.1);
-        border: 1px solid rgba(34, 197, 94, 0.4);
+        border-color: rgba(34, 197, 94, 0.5);
         color: #bbf7d0;
     }
 
-    .alert-error {
+    .toast-error {
         background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.4);
+        border-color: rgba(239, 68, 68, 0.5);
         color: #fecaca;
     }
 
@@ -89,7 +104,6 @@
         padding-bottom: 40px;
     }
 
-    /* card styles reused from gallery */
     .card {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(15px);
@@ -159,22 +173,10 @@
         position: relative;
     }
 
-    .card-text {
-        flex: 0 0 auto;
-        font-size: 0.95rem;
-        line-height: 1.6;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-        margin-bottom: 20px;
-        color: #d1d5db;
-    }
-
     .card-buttons {
         display: flex;
         gap: 12px;
-        margin-top: auto; /* push buttons to bottom */
+        margin-top: auto;
     }
 
     .btn {
@@ -248,15 +250,10 @@
         .card-content {
             padding: 20px;
         }
-    }
 
-    @media (max-width: 480px) {
-        .card-buttons {
-            flex-direction: column;
-        }
-
-        .btn {
-        padding: 14px 20px;
+        /* toast stays centered, just move slightly up on small screens */
+        .toast-container {
+            top: 80px;
         }
     }
 </style>
@@ -266,10 +263,11 @@
 <div class="home-wrapper">
     <div class="home-container">
 
+        {# Centered toast messages #}
         {% if messages %}
-        <div class="messages">
+        <div class="toast-container" id="toast-container">
             {% for message in messages %}
-                <div class="alert-msg {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                <div class="toast-msg {% if message.tags == 'success' %}toast-success{% else %}toast-error{% endif %}">
                     {{ message }}
                 </div>
             {% endfor %}
@@ -317,4 +315,22 @@
 
     </div>
 </div>
+
+{# Auto-hide script (1–2 seconds) #}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        setTimeout(function () {
+            container.style.transition = 'opacity 0.3s ease';
+            container.style.opacity = '0';
+            setTimeout(function () {
+                if (container && container.parentNode) {
+                    container.parentNode.removeChild(container);
+                }
+            }, 300);
+        }, 2000);  // 2000 ms = 2s; change to 1000 for 1s
+    });
+</script>
 {% endblock content %}

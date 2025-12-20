@@ -15,17 +15,17 @@ def home(request):
 
 def sigin(request):
     if request.method == "POST":
-        username = request.POST['name']
-        password = request.POST['password']
-        user = authenticate(request,username = username,password = password)
-        if user:
-            login(request,user)
-            messages.info(request,"Login successfully!")
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.info(request, "Login successfully!")
             return redirect('home')
         else:
-            messages.info(request,"Invalid username or password!")
+            messages.info(request, "Invalid username or password!")
             return redirect('login')
-    return render(request,'login.html')
+    return render(request, 'login.html')
 
 def sign_up(request):
     if request.method == "POST":
@@ -216,7 +216,6 @@ def verify_otp(request):
 
     return render(request, "verify_otp.html")
 
-@login_required
 def blog_detail(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
     context = {

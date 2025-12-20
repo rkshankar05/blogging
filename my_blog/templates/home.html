@@ -165,13 +165,13 @@
     /* Buttons */
     .blog-card-buttons {
         display: flex;
-        gap: 12px;
+        gap: 10px;
         margin-top: auto;
     }
 
     .blog-btn {
         flex: 1;
-        padding: 12px 20px;
+        padding: 10px 10px;
         border: none;
         border-radius: 15px;
         font-weight: 600;
@@ -269,9 +269,6 @@
 
         <div class="home-header">
             <h2>Latest Blogs</h2>
-            {% if user.is_authenticated %}
-                <a href="{% url 'add_blog' %}">+ Add New Blog</a>
-            {% endif %}
         </div>
 
         {% if blogs %}

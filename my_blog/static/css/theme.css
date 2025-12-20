@@ -22,19 +22,26 @@ body {
   font-family: 'Roboto', system-ui, -apple-system, Segoe UI, sans-serif !important;
   min-height: 100vh;
   margin: 0;
-  padding-top: var(--spacing-md);
+  padding-top: 4rem;  /* enough space for fixed navbar */
 }
+
 
 /* NAVBAR STYLES - Bootstrap 5 */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;               /* above content */
   background: var(--bg-card) !important;
   border: none !important;
   border-bottom: 1px solid var(--border-muted) !important;
-  margin-bottom: var(--spacing-sm) !important;
+  margin-bottom: 0 !important;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   padding: var(--spacing-xs) var(--spacing-sm) !important;
 }
+
 
 .navbar-brand {
   color: #ffffff !important;
@@ -47,11 +54,15 @@ body {
   color: var(--accent-2) !important;
 }
 
-.navbar-brand img {
-  height: 40px;
+.navbar-brand .logo-img {
+  height: 56px;        /* increase from ~32px */
   width: auto;
-  display: inline-block;
   border-radius: 6px;
+  box-shadow: none;
+}
+.navbar-brand:hover .logo-img {
+  transform: scale(1.05);
+  filter: brightness(1.1);
 }
 
 .navbar-nav .nav-link {

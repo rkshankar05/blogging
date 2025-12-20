@@ -42,10 +42,13 @@
     }
 
     .blog-icon img {
-        width: 50px;
-        height: 50px;
-        filter: brightness(0) invert(1);
-    }
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+}
+
+
 
     .blog-header h2 {
         color: white;
@@ -265,7 +268,7 @@
     <div class="blog-container">
         <div class="blog-header">
             <div class="blog-icon">
-                <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket icon"/>
+                 <img src="{% static 'images/logo.png' %}" alt="NRK Logo" class="logo-img">
             </div>
             <h2>Create New Blog Post</h2>
             <p>Share your thoughts with the community</p>
